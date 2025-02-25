@@ -3,9 +3,10 @@ export default defineNuxtConfig({
   compatibilityDate: '2024-11-01',
   devtools: { enabled: true },
 
-  // Adicionando o Bootstrap CSS globalmente
+  // Adicionando os arquivos CSS globalmente
   css: [
-    '@/assets/bootstrap.css', // Arquivo customizado para importar o CSS do Bootstrap
+    '@/assets/bootstrap.css', // Bootstrap customizado
+    '@/assets/css/main.css',  // CSS global do projeto
   ],
 
   // Transpilando o Bootstrap se necessário
@@ -14,13 +15,15 @@ export default defineNuxtConfig({
   },
 
   // (Opcional) Incluindo o script do Bootstrap para funcionalidades JS
-  head: {
-    script: [
-      {
-        src: 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js',
-        type: 'text/javascript',
-        body: true, // Garantir que o script seja carregado no final da página
-      },
-    ],
+  app: {
+    head: {
+      script: [
+        {
+          src: 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js',
+          type: 'text/javascript',
+          body: true, // Garante que o script seja carregado no final da página
+        },
+      ],
+    },
   },
 });
