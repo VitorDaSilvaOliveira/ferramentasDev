@@ -3,6 +3,9 @@ export default defineNuxtConfig({
   compatibilityDate: '2024-11-01',
   devtools: { enabled: true },
 
+  modules: [
+    '@pinia/nuxt',
+  ],
   // Adicionando os arquivos CSS globalmente
   css: [
     '@/assets/bootstrap.css', // Bootstrap customizado

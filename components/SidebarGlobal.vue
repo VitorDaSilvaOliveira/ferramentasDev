@@ -1,28 +1,33 @@
 <template>
-  <aside class="sidebar" :class="{ 'sidebar-open': isOpen }">
-    <!-- Botão de seta -->
-    <button class="toggle-btn" @click="toggleSidebar">
-      <i :class="isOpen ? 'bi bi-chevron-left' : 'bi bi-chevron-right'"></i>
+  <aside class="sidebar" :class="{ 'sidebar-open': sidebarStore.isOpen }">
+    <button class="toggle-btn" @click="sidebarStore.toggleSidebar">
+      <i :class="sidebarStore.isOpen ? 'bi bi-chevron-left' : 'bi bi-chevron-right'"></i>
     </button>
 
     <nav class="sidebar-menu">
       <ul>
-        <li @click="openSidebar">
-          <NuxtLink to="/calculadora">
-            <IconsCalculator /> 
-            <span v-if="isOpen">Calculadoras</span>
+        <li @click="sidebarStore.openSidebar">
+          <NuxtLink to="/calculadora" class="menu-item">
+            <div class="icon-container">
+              <IconsCalculator />
+            </div>
+            <span class="menu-text" v-if="sidebarStore.isOpen">Calculadoras</span>
           </NuxtLink>
         </li>
-        <li @click="openSidebar">
-          <NuxtLink to="/validador">
-            <IconsValidator /> 
-            <span v-if="isOpen">Validadores</span>
+        <li @click="sidebarStore.openSidebar">
+          <NuxtLink to="/validador" class="menu-item">
+            <div class="icon-container">
+              <IconsValidator />
+            </div>
+            <span class="menu-text" v-if="sidebarStore.isOpen">Validadores</span>
           </NuxtLink>
         </li>
-        <li @click="openSidebar">
-          <NuxtLink to="/gerador">
-            <IconsGenerator /> 
-            <span v-if="isOpen">Geradores</span>
+        <li @click="sidebarStore.openSidebar">
+          <NuxtLink to="/gerador" class="menu-item">
+            <div class="icon-container" style="border-color: red;">
+              <IconsGenerator />
+            </div>
+            <span class="menu-text" v-if="sidebarStore.isOpen">Geradores</span>
           </NuxtLink>
         </li>
       </ul>
@@ -30,32 +35,19 @@
   </aside>
 </template>
 
-<script>
-export default {
-  data() {
-    return {
-      isOpen: false, // Começa fechado
-    };
-  },
-  methods: {
-    toggleSidebar() {
-      this.isOpen = !this.isOpen;
-    },
-    openSidebar() {
-      this.isOpen = true; // Abre ao clicar em um ícone
-    }
-  }
-};
+<script setup>
+import { useSidebarStore } from '~/stores/sidebar';
+
+const sidebarStore = useSidebarStore();
 </script>
 
 <style scoped>
 /* Estilos Gerais */
 .sidebar {
-  margin-top: 10vh;
   position: fixed;
   left: 0;
-  top: 0;
-  width: 60px; /* Largura inicial reduzida */
+  top: 10vh;
+  width: 4.5%;
   height: 100vh;
   background-color: rgb(187, 153, 248);
   color: white;
@@ -90,7 +82,12 @@ export default {
   background-color: rgb(110, 74, 180);
 }
 
-/* Estilizando os itens */
+/* Menu */
+.sidebar-menu {
+  width: 100%;
+  padding: 0;
+}
+
 .sidebar-menu ul {
   list-style: none;
   padding: 0;
@@ -98,26 +95,72 @@ export default {
 }
 
 .sidebar-menu li {
-  margin: 15px 0;
+  width: 100%;
   display: flex;
   align-items: center;
-  justify-content: center;
+  padding: 10px 0;
+  justify-content: flex-start;
 }
 
+/* Links */
 .sidebar-menu a {
-  color: rgb(0, 0, 0);
   text-decoration: none;
   display: flex;
   align-items: center;
-  gap: 10px;
-  font-size: 1.2rem; 
+  width: 100%;
+  padding: 8px;
+  border-radius: 5px;
+  transition: background 0.3s;
+  color: black;
 }
 
-/* Ícones */
-.sidebar-menu svg {
-  width: 75%;
-  height: auto;
-  fill: white;
+.sidebar-menu a:hover {
+  background-color: rgba(255, 255, 255, 0.2);
 }
 
+/* Ícones com tamanho fixo */
+.icon-container {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* Garante que os ícones fiquem alinhados corretamente */
+.icon-container svg {
+  width: 24px;
+  height: 24px;
+  fill: black;
+  transition: width 0.3s ease, height 0.3s ease;
+}
+
+/* Ajuste da disposição dos itens */
+.menu-item {
+  display: flex;
+  align-items: center;
+  gap: 12px; /* Espaçamento entre ícone e texto */
+  width: 100%;
+  padding: 1px;
+}
+
+/* Texto do menu */
+.menu-text {
+  white-space: nowrap;
+  overflow: hidden;
+  transition: opacity 0.3s ease, width 0.3s ease;
+}
+
+/* Esconder texto quando fechado */
+.sidebar:not(.sidebar-open) .menu-text {
+  opacity: 0;
+  width: 0;
+  visibility: hidden;
+}
+/* Ícones grandes quando a sidebar está fechada */
+.sidebar:not(.sidebar-open) .icon-container svg {
+  width: 40px; /* Aumente conforme necessário */
+  height: 40px;
+}
 </style>
